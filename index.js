@@ -17,14 +17,25 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("user connected", socket.id);
-
   socket.on("identity", async (userId) => {
-    console.log(userId);
     await axios.post(`${process.env.NEXT_BASE_URL}/api/socket/connect`, {
       userId,
       socketId: socket.id,
     });
+  });
+
+  socket.on("update-location", async ({ userId, latitude, longitude }) => {
+    const location = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
+    await axios.post(
+      `${process.env.NEXT_BASE_URL}/api/socket/update-location`,
+      {
+        userId,
+        location,
+      },
+    );
   });
 
   socket.on("disconnect", () => {
@@ -36,4 +47,4 @@ server.listen(port, () => {
   console.log(`Server running at port: ${port}`);
 });
 
-//next : 1: 29: 00
+//next : 3: 10: 00
