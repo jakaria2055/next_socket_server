@@ -38,7 +38,11 @@ io.on("connection", (socket) => {
         location,
       },
     );
+
+    io.emit("update-deliveryBoy-location", { userId, location });
   });
+
+  
 
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
@@ -60,4 +64,4 @@ server.listen(port, () => {
   console.log(`Server running at port: ${port}`);
 });
 
-//next : 3: 10: 00
+//next : 5: 00: 00
